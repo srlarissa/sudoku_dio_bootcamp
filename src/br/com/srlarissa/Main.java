@@ -49,6 +49,24 @@ public class Main {
         }
     }
 
+    private static void finishGame() {
+    }
+
+    private static void clearBoard() {
+    }
+
+    private static void showGameStatus() {
+    }
+
+    private static void showCurrentBoard() {
+    }
+
+    private static void removeNumber() {
+    }
+
+    private static void inputNumber() {
+    }
+
     private static void startGame(final Map<String, String> positions) {
     }
 }
