@@ -1,17 +1,44 @@
 package br.com.srlarissa;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
-    public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+import br.com.srlarissa.model.Board;
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+import java.util.Scanner;
+import java.util.stream.Stream;
+
+public class Main {
+    private final static Scanner scanner = new Scanner(System.in);
+    private static Board board;
+    private final static int BOARD_LIMIT = 9;
+
+    public static void main(String[] args) {
+        final var positions = Stream.of(args);
+
+        var option = -1;
+        while(true){
+            System.out.println("Selecione uma das opções a seguir:");
+            System.out.println("1 - Iniciar um novo jogo");
+            System.out.println("2 - Adicionar um número");
+            System.out.println("3 - Remover um número");
+            System.out.println("4 - Visualizar o tabuleiro");
+            System.out.println("5 - Verificar o status do jogo");
+            System.out.println("6 - Limpar tabuleiro");
+            System.out.println("7 - Finalizar jogo");
+            System.out.println("8 - Sair");
+
+            option = scanner.nextInt();
+
+            switch(option){
+                case 1 -> startGame(positions);
+                case 2 -> inputNumber();
+                case 3 -> removeNumber();
+                case 4 -> showCurrentBoard();
+                case 5 -> showGameStatus();
+                case 6 -> clearBoard();
+                case 7 -> finishGame();
+                case 8 -> System.exit(0);
+                default -> System.out.println("Opção inválida! Selecione uma das opções do menu.");
+            }
+
         }
     }
 }
