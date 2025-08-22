@@ -2,8 +2,11 @@ package br.com.srlarissa;
 
 import br.com.srlarissa.model.Board;
 
+import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toMap;
 
 public class Main {
     private final static Scanner scanner = new Scanner(System.in);
@@ -11,7 +14,11 @@ public class Main {
     private final static int BOARD_LIMIT = 9;
 
     public static void main(String[] args) {
-        final var positions = Stream.of(args);
+        final var positions = Stream.of(args)
+                .collect(toMap(
+                        k -> k.split(";")[0],
+                        v -> v.split(";")[1]
+                ));
 
         var option = -1;
         while(true){
@@ -40,5 +47,8 @@ public class Main {
             }
 
         }
+    }
+
+    private static void startGame(final Map<String, String> positions) {
     }
 }
