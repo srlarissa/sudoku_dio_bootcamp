@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Stream;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toMap;
 
@@ -70,6 +71,24 @@ public class Main {
     }
 
     private static void inputNumber() {
+        if(isNull(board)){
+            System.out.println("JOGO AINDA NÃO COMEÇOU");
+            return;
+        }
+
+        System.out.println("INFORME A COLUNA EM QUE O NÚMERO SERÁ INSERIDO: ");
+        var col = runUntilGetValidNumber(0, 8);
+
+        System.out.println("INFORME A LINHA EM QUE O NÚMERO SERÁ INSERIDO: ");
+        var row = runUntilGetValidNumber(0, 8);
+
+        System.out.printf("INFORME O NÚMERO QUE SERÁ INSERIDO NA POSIÇÃO [%s, %s]: ", col, row);
+        var value = runUntilGetValidNumber(1, 9);
+
+        if(!board.changeValue(col, row, value)){
+            System.out.printf("A POSIÇÃO [%s, %s] TEM UM VALOR FIXO", col, row);
+        }
+
     }
 
     private static void startGame(final Map<String, String> positions) {
@@ -92,5 +111,15 @@ public class Main {
 
         board = new Board(spaces);
         System.out.println("JOGO PRONTO PARA INICIAR");
+    }
+
+    private static int runUntilGetValidNumber(final int min, final int max){
+        var current = scanner.nextInt();
+
+        while(current < min || current > max){
+            System.out.printf("INFORME UM NÚMERO ENTRE %s e %s\n", min, max);
+            current = scanner.nextInt();
+        }
+        return current;
     }
 }
