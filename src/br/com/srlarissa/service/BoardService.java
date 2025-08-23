@@ -1,6 +1,7 @@
 package br.com.srlarissa.service;
 
 import br.com.srlarissa.model.Board;
+import br.com.srlarissa.model.GameStatusEnum;
 import br.com.srlarissa.model.Space;
 
 import java.util.ArrayList;
@@ -17,7 +18,23 @@ public class BoardService {
     }
 
     public List<List<Space>> getSpaces(){
-        return this.board.getSpaces();
+        return board.getSpaces();
+    }
+
+    public void reset(){
+        board.reset();
+    }
+
+    public boolean hasErrors(){
+        return board.hasErrors();
+    }
+
+    public GameStatusEnum getStatus(){
+        return board.getStatus();
+    }
+
+    public boolean gameIsFinished(){
+        return board.gameHasFinish();
     }
 
     private List<List<Space>> initBoard(Map<String, String> gameConfig) {
