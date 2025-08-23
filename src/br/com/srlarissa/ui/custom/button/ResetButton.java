@@ -1,4 +1,4 @@
-package br.com.srlarissa.ui.custom;
+package br.com.srlarissa.ui.custom.button;
 
 import javax.swing.*;
 
