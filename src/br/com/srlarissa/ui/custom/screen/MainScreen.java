@@ -2,6 +2,8 @@ package br.com.srlarissa.ui.custom.screen;
 
 import br.com.srlarissa.model.Space;
 import br.com.srlarissa.service.BoardService;
+import br.com.srlarissa.service.EventEnum;
+import br.com.srlarissa.service.NotifierService;
 import br.com.srlarissa.ui.custom.button.CheckGameStatusButton;
 import br.com.srlarissa.ui.custom.button.FinishGameButton;
 import br.com.srlarissa.ui.custom.button.ResetButton;
@@ -16,9 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static br.com.srlarissa.service.EventEnum.CLEAR_SPACE;
+import static javax.swing.JOptionPane.showConfirmDialog;
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class MainScreen {
     private final static Dimension dimension = new Dimension(600, 600);
     private final BoardService boardService;
+    private final NotifierService notifierService;
 
     private JButton checkGameStatusButton;
     private JButton finishGameButton;
@@ -26,6 +33,7 @@ public class MainScreen {
 
     public MainScreen(final Map<String, String> gameConfig){
         this.boardService = new BoardService(gameConfig);
+        this.notifierService = new NotifierService();
     }
 
     public void buildMainScreen(){
@@ -66,18 +74,19 @@ public class MainScreen {
 
     private JPanel generatePanel(final List<Space> spaces){
         List<NumberText> fields = new ArrayList<>(spaces.stream().map(NumberText::new).toList());
+        fields.forEach(t -> notifierService.subscriber(CLEAR_SPACE, t));
         return new SudokuSector(fields);
     }
 
     private void addFinishButton(final JPanel mainPanel) {
         finishGameButton = new FinishGameButton(e -> {
             if(boardService.gameIsFinished()){
-                JOptionPane.showMessageDialog(null, "Parabéns! Você concluiu o jogo!");
+                showMessageDialog(null, "Parabéns! Você concluiu o jogo!");
                 resetButton.setEnabled(false);
                 finishGameButton.setEnabled(false);
                 checkGameStatusButton.setEnabled(false);
             }else{
-                JOptionPane.showMessageDialog(
+                showMessageDialog(
                         null,
                         "Seu jogo ainda tem alguma inconsistência. Tente novamente.");
             }
@@ -97,21 +106,24 @@ public class MainScreen {
             };
 
             message += hasErrors ? " e contém erros" : " e não contém erros";
-            JOptionPane.showMessageDialog(null, message);
+            showMessageDialog(null, message);
         });
         mainPanel.add(checkGameStatusButton);
     }
 
     private void addResetButton(final JPanel mainPanel) {
         resetButton = new ResetButton(e ->{
-            var dialogResult = JOptionPane.showConfirmDialog(
+            var dialogResult = showConfirmDialog(
                     null,
                     "Deseja reiniciar o jogo?",
                     "Limpar o jogo",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE
             );
-            if(dialogResult == 0) boardService.reset();
+            if(dialogResult == 0) {
+                boardService.reset();
+                notifierService.notify(CLEAR_SPACE);
+            };
         });
         mainPanel.add(resetButton);
     }
