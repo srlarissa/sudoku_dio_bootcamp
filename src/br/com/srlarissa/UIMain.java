@@ -1,4 +1,4 @@
-package br.com.srlarissa.util;
+package br.com.srlarissa;
 
 import br.com.srlarissa.ui.custom.screen.MainScreen;
 

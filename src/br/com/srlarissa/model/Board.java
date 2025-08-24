@@ -18,7 +18,7 @@ public class Board {
 
     public GameStatusEnum getStatus(){
         if(spaces.stream().flatMap(Collection::stream).noneMatch(
-                s -> s.isFixed() && nonNull(s.getCurrentValue()))) return NON_STARTED;
+                s -> !s.isFixed() && nonNull(s.getCurrentValue()))) return NON_STARTED;
 
         return spaces.stream().flatMap(Collection::stream).anyMatch(
                 s -> isNull(s.getCurrentValue())) ? INCOMPLETE : COMPLETE;
@@ -27,7 +27,8 @@ public class Board {
     public boolean hasErrors(){
         if(getStatus() == NON_STARTED) return false;
 
-        return spaces.stream().flatMap(Collection::stream).anyMatch(s -> nonNull(s.getCurrentValue()) &&
+        return spaces.stream().flatMap(Collection::stream)
+                .anyMatch(s -> nonNull(s.getCurrentValue()) &&
                 !s.getCurrentValue().equals(s.getExpectedValue()));
     }
 

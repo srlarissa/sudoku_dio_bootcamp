@@ -1,14 +1,19 @@
 package br.com.srlarissa.ui.custom.screen;
 
+import br.com.srlarissa.model.Space;
 import br.com.srlarissa.service.BoardService;
 import br.com.srlarissa.ui.custom.button.CheckGameStatusButton;
 import br.com.srlarissa.ui.custom.button.FinishGameButton;
 import br.com.srlarissa.ui.custom.button.ResetButton;
 import br.com.srlarissa.ui.custom.frame.MainFrame;
+import br.com.srlarissa.ui.custom.input.NumberText;
 import br.com.srlarissa.ui.custom.panel.MainPanel;
+import br.com.srlarissa.ui.custom.panel.SudokuSector;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class MainScreen {
@@ -26,6 +31,17 @@ public class MainScreen {
     public void buildMainScreen(){
         JPanel mainPanel = new MainPanel(dimension);
         JFrame mainFrame = new MainFrame(dimension, mainPanel);
+
+        for(int r = 0; r < 9; r += 3){
+            var endRow = r + 2;
+            for(int c = 0; c < 9; c += 3){
+                var endCol = c + 2;
+                var spaces = getSpacesFromSector(boardService.getSpaces(), c, endCol, r, endRow);
+                JPanel sector = generatePanel(spaces);
+                mainPanel.add(sector);
+            }
+
+        }
         
         addResetButton(mainPanel);
         addCheckGameStatusButton(mainPanel);
@@ -35,7 +51,25 @@ public class MainScreen {
         mainFrame.repaint();
     }
 
-    private void addFinishButton(JPanel mainPanel) {
+    private List<Space> getSpacesFromSector(final List<List<Space>> spaces,
+                                            final int initCol, final int endCol,
+                                            final int initRow, final int endRow){
+
+        List<Space> spaceSector = new ArrayList<>();
+        for (int r = initRow; r <= endRow; r++){
+            for(int c = initCol; c <= endCol; c++){
+                spaceSector.add(spaces.get(c).get(r));
+            }
+        }
+        return spaceSector;
+    }
+
+    private JPanel generatePanel(final List<Space> spaces){
+        List<NumberText> fields = new ArrayList<>(spaces.stream().map(NumberText::new).toList());
+        return new SudokuSector(fields);
+    }
+
+    private void addFinishButton(final JPanel mainPanel) {
         finishGameButton = new FinishGameButton(e -> {
             if(boardService.gameIsFinished()){
                 JOptionPane.showMessageDialog(null, "Parabéns! Você concluiu o jogo!");
