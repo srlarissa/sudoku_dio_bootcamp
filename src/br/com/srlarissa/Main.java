@@ -3,18 +3,15 @@ package br.com.srlarissa;
 import br.com.srlarissa.model.Board;
 import br.com.srlarissa.model.Space;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.function.DoubleToIntFunction;
 import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toMap;
 
-public class Main {
+public class  Main {
     private final static Scanner scanner = new Scanner(System.in);
     private static Board board;
     private final static int BOARD_LIMIT = 9;
