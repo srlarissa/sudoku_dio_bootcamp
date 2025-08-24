@@ -3,6 +3,8 @@ package br.com.srlarissa.ui.custom.input;
 import br.com.srlarissa.model.Space;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 
 import static java.awt.Font.PLAIN;
@@ -23,5 +25,32 @@ public class NumberText extends JTextField {
         this.setEnabled(!space.isFixed());
 
         if(space.isFixed()) this.setText(space.getCurrentValue().toString());
+
+        this.getDocument().addDocumentListener(new DocumentListener() {
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changeSpace();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changeSpace();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                changeSpace();
+            }
+
+            private void changeSpace(){
+                if(getText().isEmpty()){
+                    space.clearSpace();
+                    return;
+                }
+
+                space.setCurrentValue(Integer.parseInt(getText()));
+            }
+        });
     }
 }
