@@ -13,7 +13,7 @@ import static br.com.srlarissa.service.EventEnum.CLEAR_SPACE;
 import static java.awt.Font.PLAIN;
 
 
-public class NumberText extends JTextField, implements EventListener {
+public class NumberText extends JTextField implements EventListener {
     private final Space space;
 
     public NumberText(final Space space){
